@@ -1,4 +1,4 @@
-name: Deploy to Docker Hub
+name: Deploy to Docker Hub and Oracle VPS
 
 on:
     push:
@@ -24,10 +24,8 @@ jobs:
 
             - name: Build and Push Docker image
               run: |
-                  # Build the Docker image
-                  docker build -t ajxdoc/proact_backend:latest .
-                  # Push the Docker image to Docker Hub
-                  docker push ajxdoc/proact_backend:latest
+                  docker build -t ${{ secrets.DOCKER_USERNAME }}/proact_backend:latest .
+                  docker push ${{ secrets.DOCKER_USERNAME }}/proact_backend:latest
 
             - name: Deploy via SSH to server
               uses: appleboy/ssh-action@master
@@ -38,15 +36,7 @@ jobs:
                   port: ${{ secrets.SSH_PORT }}
                   script: |
                       cd ${{ secrets.PROJECT_PATH }}
-
-                      # Stop any running containers (if necessary)
                       docker-compose down
-
-                      # Pull the latest image from Docker Hub
-                      docker pull your-dockerhub-username/your-image-name:latest
-
-                      # Rebuild and start the service with the new image
+                      docker pull ${{ secrets.DOCKER_USERNAME }}/proact_backend:latest
                       docker-compose up -d
-
-                      # Optionally prune old images
                       docker image prune -f
