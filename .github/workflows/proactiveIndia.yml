@@ -11,14 +11,6 @@ jobs:
         environment: oracle
 
         steps:
-            - name: Debug Secrets
-              run: |
-                  echo "DOCKER_USERNAME length: ${#DOCKER_USERNAME}"
-                  echo "DOCKER_PASSWORD length: ${#DOCKER_PASSWORD}"
-              env:
-                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-                  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
             - name: Checkout code
               uses: actions/checkout@v3
 
@@ -31,10 +23,10 @@ jobs:
                   username: ${{ secrets.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
 
-            - name: Build and Push Docker image
+            - name: Build and Push Docker Images
               run: |
-                  docker build -t ${{ secrets.DOCKER_USERNAME }}/proact_backend:latest .
-                  docker push ${{ secrets.DOCKER_USERNAME }}/proact_backend:latest
+                  docker-compose build
+                  docker-compose push
 
             - name: Deploy via SSH to server
               uses: appleboy/ssh-action@master
@@ -46,6 +38,6 @@ jobs:
                   script: |
                       cd ${{ secrets.PROJECT_PATH }}
                       docker-compose down
-                      docker pull ${{ secrets.DOCKER_USERNAME }}/proact_backend:latest
+                      docker-compose pull
                       docker-compose up -d
                       docker image prune -f
