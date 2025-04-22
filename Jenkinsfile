@@ -1,10 +1,13 @@
 pipeline {
     agent any
 
+    environment {
+        COMPOSE_FILE = 'docker-compose.yml'
+    }
     stages {
-        stage('Git Checkout') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/ajstudd/proact_backend.git'
+                git credentialsId: 'github-credentials', url: 'https://github.com/ajstudd/proactive_india_backend.git'
             }
         }
 
