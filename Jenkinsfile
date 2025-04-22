@@ -4,10 +4,13 @@ pipeline {
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
     }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', git credentialsId: 'github-credentials', url: 'https://github.com/ajstudd/proactive_india_backend.git'
+                git branch: 'main',
+                    credentialsId: 'github-credentials',
+                    url: 'https://github.com/ajstudd/proactive_india_backend.git'
             }
         }
 
