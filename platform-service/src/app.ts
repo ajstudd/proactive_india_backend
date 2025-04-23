@@ -32,7 +32,7 @@ app.use(express.static('public'));
 //this will expose the file to the client , can be a security issue
 // app.use('/file', express.static('uploads'));
 
-app.use('/api/v1', routes);
+app.use('/v1', routes);
 
 app.get('/', (req, res) => {
     res.send('Hello Proactive India');
