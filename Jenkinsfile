@@ -41,7 +41,7 @@ pipeline {
                         # Create platform-service .env file
                         mkdir -p platform-service
                         cat << EOF > platform-service/.env
-PORT=5002
+PORT=5001
 NODE_ENV="development"
 MONGO_URL="$MONGO_URL"
 JWT_TOKEN_SECRET="$JWT_SECRET"
