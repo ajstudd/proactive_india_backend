@@ -95,9 +95,11 @@ EOF
         
         stage('Build & Push Images') {
             steps {
-                sh 'docker compose build'
-                sh 'docker compose push'
-            }
+                    sh '''
+                        docker compose build
+                        docker compose push
+                    '''
+                }
         }
         
         stage('Deploy Locally') {
