@@ -2,29 +2,40 @@ pipeline {
     agent any
 
     environment {
-        COMPOSE_FILE = 'docker-compose.yml'
+        DOCKERHUB_USERNAME = credentials('docker-username')
+        DOCKERHUB_PASSWORD = credentials('docker-password')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    credentialsId: 'github-credentials',
-                    url: 'https://github.com/ajstudd/proactive_india_backend.git'
+                git credentialsId: 'github-credentials', url: 'https://github.com/ajstudd/proactive_india_backend.git'
             }
         }
 
-        stage('Security Audit') {
+        stage('Docker Login') {
             steps {
-                sh 'npm install'
-                sh 'npm audit --audit-level=moderate || true'
+                sh '''
+                    echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                '''
             }
         }
 
-        stage('Build and Deploy') {
+        stage('Build & Push Images') {
             steps {
-                sh 'docker-compose down'
-                sh 'docker-compose up -d --build'
+                sh 'docker compose build'
+                sh 'docker compose push'
+            }
+        }
+
+        stage('Deploy Locally') {
+            steps {
+                sh '''
+                    docker compose down
+                    docker compose pull
+                    docker compose up -d
+                    docker image prune -f
+                '''
             }
         }
     }
