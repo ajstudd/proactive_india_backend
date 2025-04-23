@@ -1,5 +1,6 @@
 services:
   auth-service:
+    build: ./auth-service
     image: ajxdoc/auth-service:latest
     ports:
       - "5001:5001"
@@ -9,6 +10,7 @@ services:
       - backend
 
   platform-service:
+    build: ./platform-service
     image: ajxdoc/platform-service:latest
     ports:
       - "5002:5002"
@@ -18,6 +20,7 @@ services:
       - backend
 
   api-gateway:
+    build: ./api-gateway
     image: ajxdoc/api-gateway:latest
     container_name: api-gateway
     ports:
