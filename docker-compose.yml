@@ -1,5 +1,6 @@
 services:
   auth-service:
+    platform: linux/amd64
     build: ./auth-service
     image: ajxdoc/auth-service:latest
     ports:
@@ -10,6 +11,7 @@ services:
       - backend
 
   platform-service:
+    platform: linux/amd64
     build: ./platform-service
     image: ajxdoc/platform-service:latest
     ports:
@@ -20,6 +22,7 @@ services:
       - backend
 
   api-gateway:
+    platform: linux/amd64
     build: ./api-gateway
     image: ajxdoc/api-gateway:latest
     container_name: api-gateway

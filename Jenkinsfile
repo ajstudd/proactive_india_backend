@@ -87,7 +87,6 @@ FRONTEND_URL="https://www.proactiveindia.site"
 EOF
                     '''
                     
-                    // Set secure permissions
                     sh 'chmod 600 platform-service/.env auth-service/.env'
                 }
             }
